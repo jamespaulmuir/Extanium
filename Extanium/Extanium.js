@@ -52,7 +52,12 @@ Ext.apply(Ext, {
      * @type {Boolean}
      */
     isiPad: false,
-    
+
+    /**
+     * Checks if running on BlackBerry
+     * @type {Boolean}
+     */
+    isBlackBerry: false,
      
     /**
      * Controls, if log messages will be shown or not (default: false)
@@ -221,6 +226,10 @@ Ext.apply(Ext, {
         if (Titanium.Platform.osname == "ipad") {
             Ext.isiPad = true;
         }
+
+        if (Titanium.Platform.osname == 'blackberry') {
+            Ext.isBlackBerry = true;
+        }
     },
     
     
@@ -308,8 +317,24 @@ Ext.apply(Ext, {
         }
         return false;
     },
-    
-    
+
+    /**
+     * Executes the given function in App scope
+     * by providing the given arguments if the device
+     * is a BlackBerry.
+     *
+     * @param {Function} fn Function to execute
+     * @param {Array} args Arguments for the function
+     * @return {Mixed|Boolean} Function return value or false if not on BlackBerry
+     */
+    onBlackBerry: function() {
+        if (Ext.isBlackBerry) {
+            return fn.createDelegate(Ext, args)();
+        }
+        return false;
+    },
+
+
     /**
      * Reference for Titanium.include
      */
